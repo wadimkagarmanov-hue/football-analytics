@@ -52,6 +52,8 @@ export default async function MatchPage({ params, searchParams }: { params: Prom
     getMatchStats(match.id, finished).catch(() => null),
   ]);
 
+  const stats = actual?.data ?? null;
+
   // исключаем сам матч из «формы», чтобы страница завершённого матча не подсматривала в результат
   const before = (ms: typeof hm.data) => ms.filter((m) => m.kickoff < match.kickoff);
   const hAll = before(hm.data);
@@ -252,18 +254,18 @@ export default async function MatchPage({ params, searchParams }: { params: Prom
         </div>
       </Section>
 
-      {actual.data && (
+      {stats && (
         <Section title="Статистика матча">
           <div className="grid divide-y divide-line md:grid-cols-2 md:divide-x md:divide-y-0">
             <div>
-              <StatBar label="xG" home={actual.data.home.xg} away={actual.data.away.xg} digits={2} />
-              <StatBar label="Владение" home={actual.data.home.possession} away={actual.data.away.possession} digits={0} suffix="%" />
-              <StatBar label="Удары" home={actual.data.home.shots} away={actual.data.away.shots} digits={0} />
+              <StatBar label="xG" home={stats.home.xg} away={stats.away.xg} digits={2} />
+              <StatBar label="Владение" home={stats.home.possession} away={stats.away.possession} digits={0} suffix="%" />
+              <StatBar label="Удары" home={stats.home.shots} away={stats.away.shots} digits={0} />
             </div>
             <div>
-              <StatBar label="В створ" home={actual.data.home.shotsOnTarget} away={actual.data.away.shotsOnTarget} digits={0} />
-              <StatBar label="Угловые" home={actual.data.home.corners} away={actual.data.away.corners} digits={0} />
-              <StatBar label="Карточки (жёлтые / красные)" home={(actual.data.home.yellow ?? 0) + (actual.data.home.red ?? 0)} away={(actual.data.away.yellow ?? 0) + (actual.data.away.red ?? 0)} digits={0} lowerIsBetter />
+              <StatBar label="В створ" home={stats.home.shotsOnTarget} away={stats.away.shotsOnTarget} digits={0} />
+              <StatBar label="Угловые" home={stats.home.corners} away={stats.away.corners} digits={0} />
+              <StatBar label="Карточки (жёлтые / красные)" home={(stats.home.yellow ?? 0) + (stats.home.red ?? 0)} away={(stats.away.yellow ?? 0) + (stats.away.red ?? 0)} digits={0} lowerIsBetter />
             </div>
           </div>
         </Section>
@@ -279,3 +281,7 @@ export default async function MatchPage({ params, searchParams }: { params: Prom
     </div>
   );
 }
+
+  
+
+  
